@@ -1,0 +1,27 @@
+<header class="header">
+  <div class="container">
+    <div class="logo">
+      <a routerLink="/" class="logo-link">
+        <img src="favicon.ico" alt="Shop Logo" />
+      </a>
+    </div>
+
+    <nav class="navbar">
+      <ul>
+        <li>
+          <a routerLink="/" aria-current="page" class="nav-link">Home</a>
+        </li>
+      </ul>
+    </nav>
+
+    <div class="auth-links">
+      @if(!isLogin){
+      <a routerLink="/signup" class="signup" aria-current="page">Sign Up</a>
+      <a routerLink="/login" class="login" aria-current="page">Login</a>
+      }
+      @if(isLogin){
+      <a class="logout" (click)="logout"  aria-current="page">Logout</a>
+      }
+    </div>
+  </div>
+</header>
