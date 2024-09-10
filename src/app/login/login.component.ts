@@ -1,5 +1,5 @@
 import { Login } from './../interfaces/auth';
-import { Component } from '@angular/core';
+import { Component, OnDestroy ,OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { AuthService } from '../services/auth.service';
 import { FormControl, FormGroup, Validators,ReactiveFormsModule} from '@angular/forms';
@@ -10,11 +10,9 @@ import { FormControl, FormGroup, Validators,ReactiveFormsModule} from '@angular/
   templateUrl: './login.component.html',
   styleUrl: './login.component.scss',
 })
-export class LoginComponent {
+export class LoginComponent implements OnInit {
   loginForm: FormGroup;
-  invalidLogin: string ='';
   constructor(private _AuthService: AuthService, private _Router: Router) {
-    this.phoneImage = _AuthService.authPhoto;
     this.loginForm = new FormGroup({
       email: new FormControl(null, [Validators.required, Validators.email]),
       password: new FormControl(null, [
@@ -25,9 +23,10 @@ export class LoginComponent {
     });
   }
   phoneImage: string = '';
+  invalidLogin: string = '';
 
   Login(formData: FormGroup) {
-    this._AuthService.Login(formData.value).subscribe(
+      this._AuthService.Login(formData.value).subscribe(
       (res) => {
         if (res.token) {
           localStorage.setItem('user', res.token);
@@ -43,4 +42,10 @@ export class LoginComponent {
       }
     );
   }
+  ngOnInit(): void {
+    this.phoneImage = this._AuthService.authPhoto;
+  }
+//   ngOnDestroy(): void {
+//     this.phoneImage = this.subscription.unsubscribe();
+//   }
 }

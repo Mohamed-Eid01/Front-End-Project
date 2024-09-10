@@ -1,5 +1,5 @@
 import { JsonPipe } from '@angular/common';
-import { Component } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import {
   FormGroup,
   FormControl,
@@ -21,7 +21,7 @@ import { Observable } from 'rxjs';
   templateUrl: './signup.component.html',
   styleUrl: './signup.component.scss',
 })
-export class SignupComponent {
+export class SignupComponent implements OnInit ,OnDestroy{
   constructor(private _AuthService: AuthService, private _Router: Router) {
     this.phoneImage = _AuthService.authPhoto;
   }
@@ -45,13 +45,13 @@ export class SignupComponent {
   });
   // emailErrors: string[] = [];
   // passwordErrors: string[] = [];
-
+  subscription : any;
   emailErrors: string | null = null;
   passwordErrors: string | null = null;
   phoneImage: string = '';
 
   signup(formData: FormGroup) {
-    this._AuthService.signUp(formData.value).subscribe(
+    this.subscription =  this._AuthService.signUp(formData.value).subscribe(
       (res) => {
         if (res.token) {
           localStorage.setItem('user', res.token);
@@ -66,5 +66,11 @@ export class SignupComponent {
         });
       }
     );
+  }
+  ngOnInit(): void {
+    this.phoneImage = this._AuthService.authPhoto;
+  }
+  ngOnDestroy(): void {
+    this.phoneImage = this.subscription.unsubscribe();
   }
 }

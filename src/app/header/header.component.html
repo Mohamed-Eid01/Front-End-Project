@@ -9,7 +9,10 @@
     <nav class="navbar">
       <ul>
         <li>
-          <a routerLink="/" aria-current="page" class="nav-link">Home</a>
+          <a routerLink="Home" aria-current="page" class="nav-link">Home</a>
+        </li>
+        <li>
+          <a routerLink="products" aria-current="page" class="nav-link">Products</a>
         </li>
       </ul>
     </nav>
@@ -20,7 +23,7 @@
       <a routerLink="/login" class="login" aria-current="page">Login</a>
       }
       @if(isLogin){
-      <a class="logout" (click)="logout"  aria-current="page">Logout</a>
+      <a class="logout" (click)="logout()"  aria-current="page">Logout</a>
       }
     </div>
   </div>
