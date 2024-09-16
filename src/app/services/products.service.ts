@@ -20,7 +20,7 @@ export class ProductsService {
       `${this.hostName}${this.routName}?limit=${limit}&page=${page}&sort=${sort}&search=${search}`
     );
   }
-  getOneproduct(id: string):Observable<any>{
+  getOneProduct(id: string):Observable<any>{
     return this._HttpClient.get(`${this.hostName}${this.routName}/${id}`);
   }
 }

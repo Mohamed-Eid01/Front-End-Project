@@ -8,38 +8,62 @@ import { Router } from '@angular/router';
   providedIn: 'root',
 })
 export class AuthService implements OnInit {
-  constructor(private _HttpClient: HttpClient,private _Router:Router) {
+  private hostName: string = 'http://localhost:3000';
+  private routName: string = '/api/v1/auth';
+  constructor(private _HttpClient: HttpClient, private _Router: Router) {
     if (localStorage.getItem('user') != null) {
-      this.saveCurrentuser();
+      this.saveCurrentUser();
     }
   }
-  currentUser = new BehaviorSubject(null);
+  currentUser = new BehaviorSubject<any>(null);
   authPhoto: string = '/images/mobile.png';
 
-  saveCurrentuser() {
+  saveCurrentUser() {
     const token: any = localStorage.getItem('user');
-    this.currentUser = jwtDecode(token);
+    this.currentUser.next(jwtDecode(token));
   }
 
-  checkToken() { 
+  checkToken() {
     const token: any = localStorage.getItem('user');
     const decodedToken = jwtDecode(token);
-    if (decodedToken.exp! > Date.now()/ 1000) {
+    if (decodedToken.exp! > Date.now() / 1000) {
       this.logout();
-      this._Router.navigate(['/login'])
+      this._Router.navigate(['/login']);
     }
   }
   signUp(formData: signUp): Observable<any> {
     return this._HttpClient.post(
-      'http://localhost:3000/api/v1/auth/signup',
+      `${this.hostName}${this.routName}/signup`,
       formData
     );
   }
 
   Login(formData: Login): Observable<any> {
     return this._HttpClient.post(
-      'http:localhost:3000/api/v1/auth/login',
+      `${this.hostName}${this.routName}/login`,
       formData
+    );
+  }
+  sendMail(formData: Login): Observable<any> {
+    return this._HttpClient.post(
+      `${this.hostName}${this.routName}/forgetPassword`,
+      formData
+    );
+  }
+
+  verifyCode(formData: Login): Observable<any> {
+    return this._HttpClient.post(
+      `${this.hostName}${this.routName}/verifyCode`,
+      formData,
+      { headers: { authorization: `Bearer ${localStorage.getItem('verify')}` } }
+    );
+  }
+
+  resetPassword(formData: Login): Observable<any> {
+    return this._HttpClient.put(
+      `${this.hostName}${this.routName}/resetCode`,
+      formData,
+      { headers: { authorization: `Bearer ${localStorage.getItem('verify')}` } }
     );
   }
   logout() {

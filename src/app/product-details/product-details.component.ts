@@ -19,31 +19,33 @@ export class ProductDetailsComponent implements OnInit, OnDestroy {
   imgDomain: string = '';
   product: any = {};
   constructor(
-    private _AuthService:AuthService,
-    private _ActivatedRoute: ActivatedRoute,
     private _productsService: ProductsService,
+    private _AuthService: AuthService,
+    private _ActivatedRoute: ActivatedRoute,
     private _WishListService: WishlistService,
-    private _CartService :CartService
+    private _CartService: CartService
   ) {}
+
+  addToWishlist(productId: string) {
+    this._WishListService
+      .addProductToWishlist(productId)
+      .subscribe((res) => {});
+  }
+  addToCart(productId: string) {
+    this._CartService.addProductToCart(productId).subscribe((res) => {
+      alert('Product Added to cart');
+    });
+  }
   ngOnInit(): void {
-    this._AuthService.checkToken();
+    // this._AuthService.checkToken();   لما بشغلها الصور و البيانات بتختفي
     this.id = this._ActivatedRoute.snapshot.params['id'];
     this.imgDomain = this._productsService.imageDomain;
     this.subscription = this._productsService
-      .getOneproduct(this.id)
+      .getOneProduct(this.id)
       .subscribe((res) => {
         this.product = res.data;
-        console.log(this.product);
       });
   }
-addToWishlist(productId:string){
-  this._WishListService.addProductToWishlist(productId).subscribe((res)=> {
-
-  })
-}
-addToCarts(productId:string){
-  this._CartService.addProductToCart(productId).subscribe((res) => {console.log(res.data)});
-}
 
   ngOnDestroy(): void {
     this.subscription.unsubscribe();

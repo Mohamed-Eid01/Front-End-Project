@@ -1,8 +1,13 @@
 import { Login } from './../interfaces/auth';
-import { Component, OnDestroy ,OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { AuthService } from '../services/auth.service';
-import { FormControl, FormGroup, Validators,ReactiveFormsModule} from '@angular/forms';
+import {
+  FormControl,
+  FormGroup,
+  Validators,
+  ReactiveFormsModule,
+} from '@angular/forms';
 @Component({
   selector: 'app-login',
   standalone: true,
@@ -26,16 +31,17 @@ export class LoginComponent implements OnInit {
   invalidLogin: string = '';
 
   Login(formData: FormGroup) {
-      this._AuthService.Login(formData.value).subscribe(
+    this._AuthService.Login(formData.value).subscribe(
       (res) => {
         if (res.token) {
           localStorage.setItem('user', res.token);
-          this._AuthService.saveCurrentuser();
+          this._AuthService.saveCurrentUser();
         }
         this._Router.navigate(['/home']);
       },
       (err) => {
-        err.error.errors.map((error: any) => {
+        console.log(err);
+        err.error.errors?.map((error: any) => {
           this.invalidLogin = err.error.message;
           console.log(this.invalidLogin);
         });
@@ -45,7 +51,7 @@ export class LoginComponent implements OnInit {
   ngOnInit(): void {
     this.phoneImage = this._AuthService.authPhoto;
   }
-//   ngOnDestroy(): void {
-//     this.phoneImage = this.subscription.unsubscribe();
-//   }
+  //   ngOnDestroy(): void {
+  //     this.phoneImage = this.subscription.unsubscribe();
+  //   }
 }

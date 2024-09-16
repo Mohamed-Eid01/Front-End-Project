@@ -55,7 +55,7 @@ export class SignupComponent implements OnInit ,OnDestroy{
       (res) => {
         if (res.token) {
           localStorage.setItem('user', res.token);
-          this._AuthService.saveCurrentuser();
+          this._AuthService.saveCurrentUser();
         }
         this._Router.navigate(['/home']);
       },

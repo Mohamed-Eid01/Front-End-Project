@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { Router, RouterModule, RouterLink } from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
 import { AuthService } from '../services/auth.service';
 
 @Component({
@@ -11,23 +11,19 @@ import { AuthService } from '../services/auth.service';
 })
 export class HeaderComponent {
   isLogin: boolean = false;
-  constructor(private _Authservice: AuthService, private _Router: Router) {
-    //   if (_Authservice.currentUser != null){
-    //     this.isLogin = true;
-    //   }
-    // else {this.isLogin = false;}
-    _Authservice.currentUser.subscribe(() => {
-      if (_Authservice.currentUser.getValue != null) {
+  constructor(private _AuthService: AuthService, private _Router: Router) {
+    // if (_AuthService.currentUser !== null) { this.isLogin = true }
+    // else { this.isLogin = false }
+    _AuthService.currentUser.subscribe(() => {
+      if (_AuthService.currentUser.getValue() !== null) {
         this.isLogin = true;
       } else {
-        this.isLogin;
+        this.isLogin = false;
       }
     });
-
-    console.log(this.isLogin);
   }
   logout() {
-    this._Authservice.logout();
-    this._Router.navigate(['/login']);
+    this._AuthService.logout();
+    this._Router.navigate(['/home']);
   }
 }

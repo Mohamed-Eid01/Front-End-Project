@@ -15,4 +15,16 @@ export class WishlistService {
       { headers: { authorization: `Bearer ${localStorage.getItem('user')}` } }
     );
   }
+  getUserWishlist(): Observable<any> {
+    return this._HttpClient.get(`${this.hostName}${this.routName}`, {
+      headers: { authorization: `Bearer ${localStorage.getItem('user')}` },
+    });
+  }
+
+  removeProductFromWishlist(itemId: string): Observable<any> {
+    return this._HttpClient.delete(
+      `${this.hostName}${this.routName}/${itemId}`,
+      { headers: { authorization: `Bearer ${localStorage.getItem('user')}` } }
+    );
+  }
 }

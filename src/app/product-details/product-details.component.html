@@ -4,11 +4,11 @@
       <div class="main-img">
         <img
           class="img-fluid"
-          [src]="imgDomain + product?.cover" [alt]="product.name"/>
+          [src]="imgDomain+product?.cover" [alt]="product.name"/>
         <div class="row my-3 previews">
           @for(image of product?.images; track image){
           <div class="col-md-3 my-1">
-            <img class="w-100" [src]="imgDomain + image" [alt]="product.name" />
+            <img class="w-100" [src]="imgDomain+image" [alt]="product.name" />
           </div>
           }
         </div>
@@ -37,7 +37,7 @@
             <button (click)="addToWishlist(product._id)" class="shadow btn btn btn-primary">Add to Wishlist</button>
           </div>
           <div class="block">
-            <button (click)="addToCarts(product._id)" class="shadow btn btn btn-success">Add to cart</button>
+            <button (click)="addToCart(product._id)" class="shadow btn btn btn-success">Add to cart</button>
           </div>
         </div>
       </div>
